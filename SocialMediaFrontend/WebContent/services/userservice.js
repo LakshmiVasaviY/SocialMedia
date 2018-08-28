@@ -9,5 +9,15 @@ app.factory('UserService',function($http){
 		return $http.post(url,user)
 	}
 	
+	userService.login=function(user){
+		var url=BASE_URL + "/login"
+		return $http.put(url,user)
+	}
+	
+	userService.getAllJobs=function(){
+	   var url=BASE_URL+"/getalljobs"	
+	   return $http.get(url)
+	}
+	
 	return userService;
 })

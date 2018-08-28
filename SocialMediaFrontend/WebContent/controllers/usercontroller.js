@@ -13,5 +13,18 @@ app.controller('UserCtrl',function($scope,UserService,$location){
 					$scope.error=response.data//ErrorClazz object in JSON fmt
 				})
 	}
+	$scope.login=function(user){
+		UserService.login(user).then(function(response){
+			$location.path('/home')
+		},function(response){
+			$scope.error=response.data
+		})
+	}
+	
+	UserService.getAllJobs().then(function(response){
+		
+	},function(response){
+		$location.path('/login')
+	})
 	
 })

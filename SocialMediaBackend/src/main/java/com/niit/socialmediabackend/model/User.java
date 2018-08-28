@@ -18,7 +18,7 @@ public class User implements Serializable
 	@Id
 	private String email;
 	@Column(nullable=false)
-	private String pasword;
+	private String password;
 	@Column(nullable=false)
 	private String firstname;
 	private String lastname;
@@ -32,10 +32,10 @@ public class User implements Serializable
 		this.email = email;
 	}
 	public String getPassword() {
-		return pasword;
+		return password;
 	}
 	public void setPassword(String password) {
-		this.pasword = password;
+		this.password = password;
 	}
 	public String getFirstname() {
 		return firstname;
@@ -55,12 +55,11 @@ public class User implements Serializable
 	public void setPhonenumber(String phonenumber) {
 		this.phonenumber = phonenumber;
 	}
-
-	public String getPasword() {
-		return pasword;
+	public String getRoleName() {
+		return roleName;
 	}
-	public void setPasword(String pasword) {
-		this.pasword = pasword;
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
 	}
 	public boolean isOnline() {
 		return isOnline;
@@ -70,5 +69,6 @@ public class User implements Serializable
 	}
 
 
+	
 
 }
