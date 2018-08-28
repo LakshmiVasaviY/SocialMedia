@@ -1,0 +1,58 @@
+package com.niit.controllers;
+
+import java.util.Date;
+
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.niit.socialmediabackend.dao.JobDAO;
+import com.niit.socialmediabackend.dao.UserDAO;
+import com.niit.socialmediabackend.model.ErrorClazz;
+import com.niit.socialmediabackend.model.Job;
+import com.niit.socialmediabackend.model.User;
+
+@Controller
+public class JobController 
+{
+	@Autowired
+	private JobDAO jobDAO;
+	@Autowired
+	private UserDAO userDAO;
+		@RequestMapping(value="/addjob",method=RequestMethod.POST)
+		public ResponseEntity<?> saveJob(@RequestBody Job job,HttpSession session){
+			String email=(String)session.getAttribute("loggedInUser");
+			//CHECK FOR AUTHENTICATION
+	    	if(email==null)
+	    	{
+				ErrorClazz errorClazz=new ErrorClazz(4,"Unauthorized access... please login..");
+				return new ResponseEntity<ErrorClazz>(errorClazz,HttpStatus.UNAUTHORIZED);
+			}
+	    	//CHECK FOR AUTHORIZATION[ROLE]
+	    	User user=userDAO.getUser(email);
+	    	if(!user.getRoleName().equals("ADMIN"))
+	    	{
+	    		ErrorClazz errorClazz=new ErrorClazz(5,"Access Denied...You are not authorized to post a job");
+	    		return new ResponseEntity<ErrorClazz>(errorClazz,HttpStatus.UNAUTHORIZED);
+	    	}
+	    	try
+	    	{
+	    		job.setPostedOn(new Date());		
+	    		jobDAO.saveJob(job);
+	    	}
+	    	catch(Exception e)
+	    	{
+	    		ErrorClazz errorClazz=new ErrorClazz(6,"Unable to post job details");
+	    		return new ResponseEntity<ErrorClazz>(errorClazz,HttpStatus.INTERNAL_SERVER_ERROR);
+	    	}
+	    	return new ResponseEntity<Job>(job,HttpStatus.OK);
+		}
+
+
+}
