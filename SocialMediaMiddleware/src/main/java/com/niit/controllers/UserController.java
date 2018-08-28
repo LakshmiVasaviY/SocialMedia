@@ -86,7 +86,25 @@ public class UserController
     	return new ResponseEntity<Void>(HttpStatus.OK);
     }
     
-
-    
+	@RequestMapping(value="/updateprofile",method=RequestMethod.PUT)
+	public ResponseEntity<?> updateUserProfile(@RequestBody User user,HttpSession session){
+		//CHECK for AUTHENTICATION
+    	String email=(String)session.getAttribute("loggedInUser");
+    	if(email==null)
+    	{
+			ErrorClazz errorClazz=new ErrorClazz(4,"Unauthorized access... please login..");
+			return new ResponseEntity<ErrorClazz>(errorClazz,HttpStatus.UNAUTHORIZED);
+		}
+    	try
+    	{
+    		userDAO.updateUser(user);
+    	}
+    	catch(Exception e)
+    	{
+    		ErrorClazz errorClazz=new ErrorClazz(5,"Unable to update user details..");
+    		return new ResponseEntity<ErrorClazz>(errorClazz,HttpStatus.INTERNAL_SERVER_ERROR);
+    	}
+    	return new ResponseEntity<User>(user,HttpStatus.OK);
+	}
 
 }
