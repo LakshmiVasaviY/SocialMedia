@@ -1,11 +1,13 @@
 package com.niit.controllers;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,10 +29,11 @@ public class JobController
 	private UserDAO userDAO;
 		@RequestMapping(value="/addjob",method=RequestMethod.POST)
 		public ResponseEntity<?> saveJob(@RequestBody Job job,HttpSession session){
+		
 			String email=(String)session.getAttribute("loggedInUser");
 			//CHECK FOR AUTHENTICATION
 	    	if(email==null)
-	    	{
+	  	    {
 				ErrorClazz errorClazz=new ErrorClazz(4,"Unauthorized access... please login..");
 				return new ResponseEntity<ErrorClazz>(errorClazz,HttpStatus.UNAUTHORIZED);
 			}
@@ -41,6 +44,7 @@ public class JobController
 	    		ErrorClazz errorClazz=new ErrorClazz(5,"Access Denied...You are not authorized to post a job");
 	    		return new ResponseEntity<ErrorClazz>(errorClazz,HttpStatus.UNAUTHORIZED);
 	    	}
+	    	
 	    	try
 	    	{
 	    		job.setPostedOn(new Date());		
@@ -53,6 +57,21 @@ public class JobController
 	    	}
 	    	return new ResponseEntity<Job>(job,HttpStatus.OK);
 		}
+		
+		@RequestMapping(value="/getalljobs",method=RequestMethod.GET)
+		public ResponseEntity<?> getAllJobs(HttpSession session)
+		{
+			String email=(String)session.getAttribute("loggedInUser");
+			if(email==null)
+			{
+				ErrorClazz errorClazz=new ErrorClazz(4,"Unauthorized access...please login...");
+				return new ResponseEntity<ErrorClazz>(errorClazz,HttpStatus.UNAUTHORIZED);
+			}
+			List<Job> jobs=jobDAO.getAllJobs();
+			return new ResponseEntity<List<Job>>(jobs,HttpStatus.OK);
+			
+		}
+		
 
 
 }

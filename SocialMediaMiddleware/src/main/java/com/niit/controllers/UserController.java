@@ -15,27 +15,30 @@ import com.niit.socialmediabackend.model.ErrorClazz;
 import com.niit.socialmediabackend.model.User;
 
 @Controller
-public class UserController 
-{
+public class UserController {
 	@Autowired
-	public UserDAO userDAO;
-	
-	@RequestMapping(value="/register",method=RequestMethod.POST)
-	public ResponseEntity<?> registration(@RequestBody User user)
-	{
-		try
-		{
-			userDAO.registration(user);
-			return new ResponseEntity<Void>(HttpStatus.OK);
-		}
-		catch(Exception e)
-		{
-			ErrorClazz errorClazz=new ErrorClazz(1,"Something went wrong" +e.getMessage());
+private UserDAO userDAO;
+	public UserController(){
+		System.out.println("UserController bean is created");
+	}
+    @RequestMapping(value="/register",method=RequestMethod.POST)
+	public ResponseEntity<?>  registration(@RequestBody User user){
+		try{
+			//if email is not unique
+			if(!userDAO.isEmailUnique(user.getEmail())){
+				ErrorClazz errorClazz=new ErrorClazz(2,"Email id already exists.. Please choose different email id");
+				return new ResponseEntity<ErrorClazz>(errorClazz,HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+			
+		userDAO.registration(user);
+		return new ResponseEntity<Void>(HttpStatus.OK);
+		}catch(Exception e){
+			ErrorClazz errorClazz=new ErrorClazz(1,"Something went wrong. "+e.getMessage());
 			return new ResponseEntity<ErrorClazz>(errorClazz,HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
-	//middleware get user object from angular js client in JSON fmt
+    
+  //middleware get user object from angular js client in JSON fmt
   	//eg. input= {'email':'adam.e@abc.com','password':'qwerst'} 
     
 	@RequestMapping(value="/login",method=RequestMethod.PUT)
@@ -56,19 +59,7 @@ public class UserController
 		return new ResponseEntity<User>(validUser,HttpStatus.OK);
 	}
 	}
-    @RequestMapping(value="/getalljobs",method=RequestMethod.GET)
-	public ResponseEntity<?> getAllJobs(HttpSession session){
-    	System.out.println("Session Id" + session.getId());
-		System.out.println("Session Attribute " + session.getAttribute("loggedInUser"));
-		System.out.println("Created On " + session.getCreationTime());
-		String email=(String)session.getAttribute("loggedInUser");
-		if(email==null){
-			ErrorClazz errorClazz=new ErrorClazz(4,"Unauthorized access... please login..");
-			return new ResponseEntity<ErrorClazz>(errorClazz,HttpStatus.UNAUTHORIZED);
-		}
-		return new ResponseEntity<Void>(HttpStatus.OK);
-	}
-	
+   
 	
 	
 	@RequestMapping(value="/logout",method=RequestMethod.PUT)
@@ -85,26 +76,21 @@ public class UserController
 		session.invalidate();
     	return new ResponseEntity<Void>(HttpStatus.OK);
     }
-    
-	@RequestMapping(value="/updateprofile",method=RequestMethod.PUT)
+    @RequestMapping(value="/updateprofile",method=RequestMethod.PUT)
 	public ResponseEntity<?> updateUserProfile(@RequestBody User user,HttpSession session){
 		//CHECK for AUTHENTICATION
     	String email=(String)session.getAttribute("loggedInUser");
-    	if(email==null)
-    	{
+    	if(email==null){
 			ErrorClazz errorClazz=new ErrorClazz(4,"Unauthorized access... please login..");
 			return new ResponseEntity<ErrorClazz>(errorClazz,HttpStatus.UNAUTHORIZED);
 		}
-    	try
-    	{
-    		userDAO.updateUser(user);
-    	}
-    	catch(Exception e)
-    	{
+    	try{
+    	userDAO.updateUser(user);
+    	}catch(Exception e){
     		ErrorClazz errorClazz=new ErrorClazz(5,"Unable to update user details..");
     		return new ResponseEntity<ErrorClazz>(errorClazz,HttpStatus.INTERNAL_SERVER_ERROR);
     	}
     	return new ResponseEntity<User>(user,HttpStatus.OK);
 	}
-
 }
+

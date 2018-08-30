@@ -1,5 +1,8 @@
 package com.niit.socialmediabackend.daoimpl;
 
+import java.util.List;
+
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +24,15 @@ public class JobDAOImpl implements JobDAO
 	{
 		Session session=sessionFactory.getCurrentSession();
 		session.save(job);
+	}
+
+	public List<Job> getAllJobs() 
+	{
+		Session session=sessionFactory.getCurrentSession();
+		Query query=(Query) session.createQuery("from job");
+		List<Job> jobs=query.list();
+		
+		return jobs;
 	}
 
 }
