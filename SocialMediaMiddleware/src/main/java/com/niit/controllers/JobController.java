@@ -37,8 +37,10 @@ public class JobController
 				ErrorClazz errorClazz=new ErrorClazz(4,"Unauthorized access... please login..");
 				return new ResponseEntity<ErrorClazz>(errorClazz,HttpStatus.UNAUTHORIZED);
 			}
+	    	
 	    	//CHECK FOR AUTHORIZATION[ROLE]
-	    	User user=userDAO.getUser(email);
+	    	//String email="vasavi@gmail.com";
+			User user=userDAO.getUser(email);
 	    	if(!user.getRoleName().equals("ADMIN"))
 	    	{
 	    		ErrorClazz errorClazz=new ErrorClazz(5,"Access Denied...You are not authorized to post a job");

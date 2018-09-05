@@ -34,7 +34,7 @@
 				</button>
 				<div class="navbar-header">
 					<a class="navbar-brand" href="#/"><img
-						src="resources/images/niit.jpg" width="130" height="30" alt="NIIT"></a>
+						src="resources/images/niit.jpg" width="130" height="30" alt="SocialMedia"></a>
 				</div>
 				<div class="collapse navbar-collapse" id="collapse-example">
 					<ul class="nav navbar-nav ">
@@ -48,8 +48,25 @@
                    <li ng-show="user.email==undefined"><a href="#/login">Sign In</a></li>
                    <li><a href="#/home">Home</a></li>
                    <li ng-show="user.email!=undefined"><a href="#/updateprofile">Welcome {{user.firstname}}&nbsp;{{user.lastname}}</a></li>
-                   
-             <!--      <li ng-show="user.email!=undefined"><a href="" ng-click="logout()">Jobs</a></li> -->  
+                   <li class="dropdown" ng-show="user.email!=undefined" ><a href="#" class="dropdown-toggle"
+					data-toggle="dropdown">Job <span class="caret"></span></a>
+					
+				<ul class="dropdown-menu">
+				
+				<li ng-show="user.role=='ADMIN'"><a href="#/addjob">Add Job</a>
+				</li>
+				<li> <a href="#/getalljobs">View All Jobs</a></li>
+				</ul>
+				 <li class="dropdown" ng-show="user.email!=undefined" ><a href="#" class="dropdown-toggle"
+					data-toggle="dropdown">BlogPost <span class="caret"></span></a>
+					
+				<ul class="dropdown-menu">
+				
+				<li ><a href="#/addblogpost">Add BlogPost</a></li>
+				<li><a href="#/getblogs">Blogs</a></li>
+				<li ng-show="user.role=='ADMIN'"><a href="#/blogswaitingforapproval">Blogs Waiting for Approval</a>
+				</ul>
+			   </li>
                    <li ng-show="user.email!=undefined"><a href="" ng-click="logout()">Sign out</a></li>
 					</ul>
 
@@ -75,6 +92,7 @@
 <script type="text/javascript" src="services/userservice.js"></script>	
 <script type="text/javascript" src="controllers/jobcontroller.js"></script>
 <script type="text/javascript" src="services/jobservice.js"></script>
-
+<script type="text/javascript" src="controllers/blogpostcontroller.js"></script>
+<script type="text/javascript" src="services/blogpostservice.js"></script>
+<script type="text/javascript" src="controllers/blogindetailcontroller.js"></script>
 </html>
-
