@@ -1,11 +1,17 @@
+com\niit\socialmediabackend\daoimpl\NotificationDAOImpl.class
 com\niit\socialmediabackend\App.class
 com\niit\socialmediabackend\configuration\WebAppConfig.class
+com\niit\socialmediabackend\dao\BlogPostDAO.class
+com\niit\socialmediabackend\dao\NotificationDAO.class
 com\niit\socialmediabackend\model\ErrorClazz.class
 com\niit\socialmediabackend\dao\JobDAO.class
 com\niit\socialmediabackend\model\Job.class
+com\niit\socialmediabackend\daoimpl\BlogPostDAOImpl.class
+com\niit\socialmediabackend\model\BlogPost.class
 com\niit\socialmediabackend\configuration\WebAppInitializer.class
 com\niit\socialmediabackend\dao\UserDAO.class
 com\niit\socialmediabackend\daoimpl\UserDAOImpl.class
 com\niit\socialmediabackend\configuration\DBConfiguration.class
 com\niit\socialmediabackend\daoimpl\JobDAOImpl.class
+com\niit\socialmediabackend\model\Notification.class
 com\niit\socialmediabackend\model\User.class

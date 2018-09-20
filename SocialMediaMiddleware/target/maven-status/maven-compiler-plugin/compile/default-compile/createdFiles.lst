@@ -1,2 +1,4 @@
 com\niit\controllers\UserController.class
+com\niit\controllers\BlogPostController.class
 com\niit\controllers\JobController.class
+com\niit\controllers\NotificationController.class

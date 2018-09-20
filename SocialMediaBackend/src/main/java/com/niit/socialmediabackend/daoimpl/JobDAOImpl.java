@@ -26,10 +26,11 @@ public class JobDAOImpl implements JobDAO
 		session.save(job);
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<Job> getAllJobs() 
 	{
 		Session session=sessionFactory.getCurrentSession();
-		Query query= session.createQuery("from job");//HQL
+		Query query= session.createQuery("from Job");//HQL
 		List<Job> jobs=query.list();
 		
 		return jobs;
